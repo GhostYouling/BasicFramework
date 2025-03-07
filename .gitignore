@@ -1,0 +1,78 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment (venv)
+venv/
+.env
+.envrc
+*.env
+*.venv
+
+# Conda environment
+*.conda
+*.yaml
+
+# Editor-specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Logs and runtime files
+logs/
+*.log
+*.pid
+*.sock
+
+# FastAPI Uvicorn auto-reload cache
+*.db
+*.sqlite3
+
+# Docker-related files (if using Docker)
+docker-compose.override.yml
+docker-compose.yml
+.dockerignore
+
+# Ignore compiled Cython files
+*.so
+
+# Ignore Jupyter Notebook checkpoints (if using Jupyter)
+.ipynb_checkpoints/
+
+# Ignore Python cache and profiling data
+*.prof
+*.pyo
+__pycache__/
+
+# Ignore dependencies
+requirements.txt
+poetry.lock
+Pipfile.lock
+
+# Ignore static/media/uploads (if applicable)
+staticfiles/
+media/
+uploads/
+
+# Ignore pytest cache
+.cache/
+.pytest_cache/
+
+# Ignore mypy cache
+.mypy_cache/
+
+# Ignore coverage reports
+.coverage
+coverage.xml
+htmlcov/
+
+# Ignore test database
+test.db
+test.sqlite3
