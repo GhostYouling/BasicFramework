@@ -16,7 +16,7 @@ services:
       - db
 
   frontend:
-    build: ./frontend/myapp
+    build: ./myapp
     ports:
       - "8080:8080"
     depends_on:
