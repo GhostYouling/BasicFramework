@@ -1,7 +1,7 @@
 # backend/main.py
 from fastapi import APIRouter, FastAPI
 from api.user import router as user_router
-from backend.config import PORT
+from config import PORT
 
 app = FastAPI()
 
@@ -13,6 +13,6 @@ if __name__ == "__main__":
 
 
 
-@app.get("/")
+@app.get("/test")
 async def lunch_app():
     return "Welcome to here!"
