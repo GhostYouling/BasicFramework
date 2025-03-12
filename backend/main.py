@@ -1,6 +1,6 @@
 # backend/main.py
 from fastapi import APIRouter, FastAPI
-from .api.user import router as user_router
+from api.user import router as user_router
 from backend.config import PORT
 
 app = FastAPI()
