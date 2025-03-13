@@ -17,7 +17,8 @@ services:
 
   frontend:
     build: ./myapp
-    ports:
-      - "8080:8080"
+    volumes:
+      - /var/www/frontend:/app/dist  # ✅ 让 Vue `dist/` 直接输出到宿主机
     depends_on:
       - backend
+    command: ["npm", "run", "build"]  # ✅ 运行构建后退出
