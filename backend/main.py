@@ -13,6 +13,6 @@ if __name__ == "__main__":
 
 
 
-@app.get("/test")
+@app.get("/")
 async def lunch_app():
     return "Welcome to here!"
