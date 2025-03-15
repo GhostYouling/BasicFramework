@@ -1,14 +1,12 @@
 from sqlalchemy import Column, Integer, String, Enum
-from sqlalchemy.ext.declarative import declarative_base
 import enum
-
-Base = declarative_base()
+from models.base import BaseModel
 
 class RoleEnum(enum.Enum):
     admin = "admin"
     user = "user"
 
-class User(Base):
+class User(BaseModel):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True)
