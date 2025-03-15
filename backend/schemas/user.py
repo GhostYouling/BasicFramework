@@ -4,7 +4,7 @@ from typing import Optional
 from models.user import RoleEnum
 
 class UserBase(BaseModel):
-    email: EmailStr
+    email: str  # 改为普通字符串来避免EmailStr验证
     name: str
 
 class UserCreate(UserBase):
@@ -13,12 +13,12 @@ class UserCreate(UserBase):
 
 class UserUpdate(BaseModel):
     name: Optional[str] = None
-    email: Optional[EmailStr] = None
+    email: Optional[str] = None
     password: Optional[str] = None
     role: Optional[RoleEnum] = None
 
     class Config:
-        orm_mode = True
+        from_attributes = True  # 替换 orm_mode
 
 class User(UserBase):
     id: int
@@ -26,7 +26,7 @@ class User(UserBase):
     status: bool
 
     class Config:
-        orm_mode = True  # 支持从 SQLAlchemy ORM 对象转换
+        from_attributes = True  # 替换 orm_mode
 
 class Token(BaseModel):
     access_token: str

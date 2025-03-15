@@ -10,7 +10,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from pydantic import ValidationError
 
 from database import AsyncSessionLocal
-from service.user import get_user_by_email
 from schemas.user import TokenData, User
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -60,7 +59,8 @@ async def get_current_user(token: str = Depends(oauth2_scheme), db: AsyncSession
     except (JWTError, ValidationError):
         raise credentials_exception
         
-    # 获取用户
+    # 获取用户 - 在这里导入以避免循环导入
+    from service.user import get_user_by_email
     user = await get_user_by_email(db, email=token_data.email)
     if user is None:
         raise credentials_exception

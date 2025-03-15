@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql.expression import BinaryExpression
 from datetime import datetime
 
-from backend.models.base import BaseModel
+from models.base import BaseModel
 
 T = TypeVar('T', bound=BaseModel)
 
