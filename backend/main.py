@@ -4,6 +4,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from api.user import router as user_router
 from api.candidate import router as candidate_router
 from config import PORT
+from database import engine
+from models.base import BaseModel
+from models.candidate import Candidate
+from models.user import User
 
 app = FastAPI()
 
@@ -19,6 +23,12 @@ app.add_middleware(
 # 注册路由
 app.include_router(user_router, prefix="/api", tags=["users"])
 app.include_router(candidate_router, prefix="/api", tags=["candidates"])
+
+@app.on_event("startup")
+async def startup():
+    async with engine.begin() as conn:
+        # 只创建不存在的表
+        await conn.run_sync(BaseModel.metadata.create_all)
 
 if __name__ == "__main__":
     import uvicorn
