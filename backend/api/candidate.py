@@ -6,7 +6,7 @@ from service.candidate import (
     create_candidate,
     get_candidates,
     get_candidate,
-    get_candidate_by_uuid,
+    get_candidate_by_uuid_and_job_id,
     update_candidate,
     delete_candidate
 )
@@ -14,30 +14,31 @@ from dependencies import get_db
 
 router = APIRouter()
 
-@router.post("/", response_model=Candidate)
+@router.post("/candidates/", response_model=Candidate)
 async def create_candidate_endpoint(
     candidate: CandidateCreate,
     db: AsyncSession = Depends(get_db)
 ):
     """创建新的候选人"""
-    # 检查UUID是否已存在
-    existing_candidate = await get_candidate_by_uuid(db, candidate.uuid)
+    # 检查UUID和job_id组合是否已存在
+    existing_candidate = await get_candidate_by_uuid_and_job_id(db, candidate.uuid, candidate.job_id)
     if existing_candidate:
-        raise HTTPException(status_code=400, detail="UUID已存在")
+        raise HTTPException(status_code=400, detail="该候选人在此岗位下已存在")
     
     return await create_candidate(db, candidate)
 
-@router.get("/", response_model=List[Candidate])
+@router.get("/candidates/", response_model=List[Candidate])
 async def read_candidates(
     skip: int = 0,
     limit: int = 100,
     uuid: str = None,
+    job_id: str = None,
     db: AsyncSession = Depends(get_db)
 ):
     """获取候选人列表"""
-    return await get_candidates(db, skip=skip, limit=limit, uuid=uuid)
+    return await get_candidates(db, skip=skip, limit=limit, uuid=uuid, job_id=job_id)
 
-@router.get("/{candidate_id}", response_model=Candidate)
+@router.get("/candidates/{candidate_id}", response_model=Candidate)
 async def read_candidate(
     candidate_id: int,
     db: AsyncSession = Depends(get_db)
@@ -48,7 +49,7 @@ async def read_candidate(
         raise HTTPException(status_code=404, detail="候选人不存在")
     return candidate
 
-@router.put("/{candidate_id}", response_model=Candidate)
+@router.put("/candidates/{candidate_id}", response_model=Candidate)
 async def update_candidate_endpoint(
     candidate_id: int,
     candidate_data: dict,
@@ -60,7 +61,7 @@ async def update_candidate_endpoint(
         raise HTTPException(status_code=404, detail="候选人不存在")
     return updated_candidate
 
-@router.delete("/{candidate_id}")
+@router.delete("/candidates/{candidate_id}")
 async def delete_candidate_endpoint(
     candidate_id: int,
     db: AsyncSession = Depends(get_db)

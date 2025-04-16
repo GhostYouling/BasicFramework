@@ -19,6 +19,7 @@ class WorkExperience(BaseModel):
 
 class CandidateBase(BaseModel):
     uuid: str
+    job_id: str
     name: str
     gender: str
     age: str
@@ -30,7 +31,7 @@ class CandidateBase(BaseModel):
     work_experiences: List[WorkExperience]
     detail_link: str
     detail_extracted: bool = True
-    extract_time: datetime
+    is_approved_by_llm: bool = False
 
 class CandidateCreate(CandidateBase):
     pass

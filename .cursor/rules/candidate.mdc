@@ -1,0 +1,11 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# Your rule content
+
+- You can @ files here
+- You can use markdown but dont have to
+[candidate.py](mdc:backend/api/candidate.py)[candidate.py](mdc:backend/models/candidate.py)[candidate.py](mdc:backend/schemas/candidate.py)[candidate.py](mdc:backend/service/candidate.py)[test_candidate.py](mdc:backend/tests/api/test_candidate.py)

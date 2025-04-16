@@ -1,5 +1,5 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import select, and_
 from typing import List, Optional
 from datetime import datetime
 
@@ -13,25 +13,37 @@ candidate_crud = get_crud(Candidate)
 
 async def create_candidate(db: AsyncSession, candidate: CandidateCreate) -> Candidate:
     """创建候选人"""
+    # 检查是否已存在相同uuid和job_id的候选人
+    existing_candidate = await get_candidate_by_uuid_and_job_id(db, candidate.uuid, candidate.job_id)
+    if existing_candidate:
+        return existing_candidate
     return await candidate_crud.create(db, candidate.model_dump())
 
 async def get_candidates(
     db: AsyncSession,
     skip: int = 0,
     limit: int = 100,
-    uuid: Optional[str] = None
+    uuid: Optional[str] = None,
+    job_id: Optional[str] = None
 ) -> List[Candidate]:
     """获取候选人列表"""
-    filters = {Candidate.uuid == uuid} if uuid else None
+    filters = []
+    if uuid:
+        filters.append(Candidate.uuid == uuid)
+    if job_id:
+        filters.append(Candidate.job_id == job_id)
     return await candidate_crud.get_multi(db, skip=skip, limit=limit, filters=filters)
 
 async def get_candidate(db: AsyncSession, candidate_id: int) -> Optional[Candidate]:
     """获取单个候选人"""
     return await candidate_crud.get(db, candidate_id)
 
-async def get_candidate_by_uuid(db: AsyncSession, uuid: str) -> Optional[Candidate]:
-    """通过UUID获取候选人"""
-    filters = {Candidate.uuid == uuid}
+async def get_candidate_by_uuid_and_job_id(db: AsyncSession, uuid: str, job_id: str) -> Optional[Candidate]:
+    """通过UUID和job_id获取候选人"""
+    filters = [
+        Candidate.uuid == uuid,
+        Candidate.job_id == job_id
+    ]
     result = await candidate_crud.get_by_filters(db, filters=filters, limit=1)
     return result[0] if result else None
 
